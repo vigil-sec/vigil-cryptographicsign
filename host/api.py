@@ -11,6 +11,12 @@ from trusted_core import Signer, ExecutionReceipt
 logger = logging.getLogger(__name__)
 
 
+# Helper to ensure requests are allowed (MVP: allow all)
+def allow_request():
+    """MVP: Allow all requests. Future: Add policy checks here."""
+    return True
+
+
 class HostAPI:
     """
     REST API server running in the untrusted host environment.
@@ -41,6 +47,14 @@ class HostAPI:
     
     def _setup_routes(self):
         """Setup Flask routes."""
+        # Add before_request hook to explicitly allow all requests (MVP)
+        @self.app.before_request
+        def before_request():
+            """Pre-request hook: MVP allows all. Future: Add policy enforcement."""
+            if not allow_request():
+                return jsonify({"error": "Request denied"}), 403
+            return None
+        
         @self.app.route('/health', methods=['GET'])
         def health():
             """Health check endpoint."""
