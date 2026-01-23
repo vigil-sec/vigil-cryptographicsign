@@ -1,0 +1,242 @@
+═════════════════════════════════════════════════════════════════════════════
+                        VIGIL READY TO PUBLISH
+═════════════════════════════════════════════════════════════════════════════
+
+Two independent packages built, tested, and ready for distribution:
+
+1. vigil-cli v0.1.0 (PyPI)
+2. vigil/proof-service:0.1.0 (Docker Hub)
+
+═════════════════════════════════════════════════════════════════════════════
+PART 1: vigil-cli on PyPI
+═════════════════════════════════════════════════════════════════════════════
+
+Status:        ✓ BUILT & TESTED
+Location:      dist/vigil_cli-0.1.0-py3-none-any.whl (12 KB)
+               dist/vigil_cli-0.1.0.tar.gz (11 KB)
+Package Info:  setup.py, pyproject.toml
+README:        PyPI_README.md
+Documentation: CLI.md, AGENT_GUARD.md
+
+What it does:
+  - Command-line interface to Vigil proof service
+  - Commands: prove, verify, status, guard
+  - Stateless, untrusted HTTP client
+  - No private keys or secrets
+
+To publish:
+  cd /workspaces/vigil-cryptographicsign
+  pip install build twine
+  python -m build                  # Already done
+  twine upload dist/*
+
+Installation (after publishing):
+  pip install vigil-cli
+  vigil --help
+
+═════════════════════════════════════════════════════════════════════════════
+PART 2: vigil/proof-service on Docker Hub
+═════════════════════════════════════════════════════════════════════════════
+
+Status:        ✓ BUILT & TESTED
+Location:      vigil/proof-service:0.1.0 (330 MB)
+               vigil/proof-service:latest (alias)
+Container:     Dockerfile
+Documentation: ARCHITECTURE.md, DISTRIBUTION.md
+
+What it does:
+  - Cryptographic proof service
+  - Ed25519 signing with private keys
+  - Merkle tree append-only audit log
+  - Flask REST API on port 5000
+
+To publish:
+  docker login                                   # Requires Docker Hub account
+  docker push vigil/proof-service:0.1.0
+  docker push vigil/proof-service:latest
+
+Deployment (after publishing):
+  docker run -d -p 5000:5000 vigil/proof-service:0.1.0
+  curl http://localhost:5000/health
+
+═════════════════════════════════════════════════════════════════════════════
+QUICK START FOR USERS (after publication)
+═════════════════════════════════════════════════════════════════════════════
+
+Development:
+  $ pip install vigil-cli
+  $ docker run -d -p 5000:5000 vigil/proof-service:0.1.0
+  $ export VIGIL_ENDPOINT=http://localhost:5000
+  $ vigil prove --agent-id mybot --action-hash sha256:abc --policy-id safe
+
+Production:
+  $ pip install vigil-cli
+  $ export VIGIL_ENDPOINT=https://proof.company.com
+  $ vigil guard --agent-id deployer --policy-id prod-safe -- ./deploy.sh
+
+═════════════════════════════════════════════════════════════════════════════
+VERIFICATION STEPS
+═════════════════════════════════════════════════════════════════════════════
+
+Before publishing, verify:
+
+✅ PyPI Package:
+   [ ] Package built: dist/vigil_cli-0.1.0-py3-none-any.whl
+   [ ] Source built:  dist/vigil_cli-0.1.0.tar.gz
+   [ ] metadata OK:   setup.py, pyproject.toml
+   [ ] README OK:     PyPI_README.md
+   [ ] License:       MIT
+   [ ] Dependencies:  requests only (minimal)
+
+✅ Docker Image:
+   [ ] Image built:   vigil/proof-service:0.1.0
+   [ ] Image tagged:  vigil/proof-service:latest
+   [ ] Dockerfile OK
+   [ ] Health check:  Enabled
+   [ ] Test run OK:   docker run ... starts successfully
+
+✅ Documentation:
+   [ ] PyPI_README.md        - CLI package description
+   [ ] CLI.md                - Full command reference
+   [ ] AGENT_GUARD.md        - Integration examples
+   [ ] ARCHITECTURE.md       - System design
+   [ ] PUBLISH.md            - Publishing guide
+   [ ] DISTRIBUTION.md       - Distribution architecture
+
+✅ Security:
+   [ ] CLI has no private keys
+   [ ] CLI is open source (reviewable)
+   [ ] CLI clearly marked "untrusted"
+   [ ] Service has private key protection (0o600)
+   [ ] No secrets in Docker image
+   [ ] Minimal dependencies
+
+═════════════════════════════════════════════════════════════════════════════
+PUBLISH COMMANDS (READY TO RUN)
+═════════════════════════════════════════════════════════════════════════════
+
+Publish to PyPI:
+─────────────────
+cd /workspaces/vigil-cryptographicsign
+pip install build twine
+twine upload dist/*
+
+(Requires PyPI account and credentials in ~/.pypirc)
+
+Publish to Docker Hub:
+──────────────────────
+docker login
+docker push vigil/proof-service:0.1.0
+docker push vigil/proof-service:latest
+
+(Requires Docker Hub account and docker login)
+
+═════════════════════════════════════════════════════════════════════════════
+FILES & STRUCTURE
+═════════════════════════════════════════════════════════════════════════════
+
+Project Root:
+  ├── cli/                      CLI source code
+  │   ├── vigil.py              Main entry point
+  │   ├── client.py             HTTP client
+  │   └── commands/             CLI commands (prove, verify, status, guard)
+  ├── trusted_core/             Cryptographic signing
+  ├── host/                     Flask REST API
+  ├── main.py                   Service entry point
+  ├── Dockerfile                Container definition
+  ├── setup.py                  Package config
+  ├── pyproject.toml            Modern Python config
+  ├── PyPI_README.md            CLI package description
+  ├── CLI.md                    Command reference
+  ├── AGENT_GUARD.md            Integration patterns
+  ├── ARCHITECTURE.md           System design
+  ├── PUBLISH.md                Publishing guide
+  ├── DISTRIBUTION.md           Distribution guide
+  └── dist/                     Built packages
+      ├── vigil_cli-0.1.0-py3-none-any.whl
+      └── vigil_cli-0.1.0.tar.gz
+
+═════════════════════════════════════════════════════════════════════════════
+SUPPORT DOCUMENTATION
+═════════════════════════════════════════════════════════════════════════════
+
+For Users:
+  • PyPI_README.md              Start here
+  • CLI.md                      Full reference
+
+For Integrators:
+  • AGENT_GUARD.md              6 detailed examples (Python, Bash, K8s, etc.)
+  • ARCHITECTURE.md             Security model and design
+
+For Operators:
+  • Dockerfile                  Container definition
+  • DISTRIBUTION.md             Deployment architectures
+
+For Publishers:
+  • PUBLISH.md                  Step-by-step instructions
+  • PUBLISH_SUMMARY.txt         This file
+
+═════════════════════════════════════════════════════════════════════════════
+SUPPORT LINKS (to update after publication)
+═════════════════════════════════════════════════════════════════════════════
+
+After publishing, update links in documentation:
+
+PyPI Project:
+  https://pypi.org/project/vigil-cli/
+
+Docker Hub Repository:
+  https://hub.docker.com/r/vigil/proof-service
+
+GitHub Repository:
+  https://github.com/rom-mvp/vigil-cryptographicsign
+
+═════════════════════════════════════════════════════════════════════════════
+SUCCESS CRITERIA
+═════════════════════════════════════════════════════════════════════════════
+
+After publication, verify:
+
+PyPI:
+  [ ] Package appears on https://pypi.org/project/vigil-cli/
+  [ ] pip install vigil-cli works
+  [ ] vigil --help shows all commands
+  [ ] PyPI_README.md displays correctly
+
+Docker Hub:
+  [ ] Image appears on https://hub.docker.com/r/vigil/proof-service
+  [ ] docker pull vigil/proof-service:0.1.0 works
+  [ ] Image runs successfully
+  [ ] Health check passes
+
+═════════════════════════════════════════════════════════════════════════════
+NOTES
+═════════════════════════════════════════════════════════════════════════════
+
+1. Both packages can be published independently:
+   - CLI can be used without Docker (points to remote service)
+   - Service can run standalone (Docker only)
+
+2. Version numbers should stay in sync:
+   - vigil-cli v0.1.0
+   - vigil/proof-service:0.1.0
+
+3. For future updates:
+   - Update version in setup.py and pyproject.toml
+   - Rebuild package: python -m build
+   - Rebuild image: docker build -t vigil/proof-service:X.Y.Z .
+   - Publish both together for compatibility
+
+4. Security:
+   - CLI is open source (users should review)
+   - Service holds private keys (deploy in secure location)
+   - Clear trust boundary between them
+
+═════════════════════════════════════════════════════════════════════════════
+
+STATUS: ✓ READY TO PUBLISH
+
+Both vigil-cli and vigil/proof-service are built, tested, and documented.
+All publication steps are prepared and ready to execute.
+
+═════════════════════════════════════════════════════════════════════════════
