@@ -68,8 +68,8 @@ def main():
     logger.info(f'  curl http://localhost:{port}/audit-log')
     logger.info("=" * 60 + "\n")
     
-    # Start the API server (blocking)
-    api.run(debug=False)
+    # Start the Flask app directly (single source of truth)
+    api.app.run(host='0.0.0.0', port=port, debug=False)
 
 
 if __name__ == '__main__':

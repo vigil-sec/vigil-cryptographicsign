@@ -155,13 +155,4 @@ class HostAPI:
                 "entry_count": len(entries),
                 "entries": entries
             }), 200
-    
-    def run(self, debug: bool = False):
-        """
-        Start the Flask development server.
-        
-        Args:
-            debug: Enable Flask debug mode
-        """
-        logger.info(f"Starting Host API on port {self.port}")
-        self.app.run(host='0.0.0.0', port=self.port, debug=debug)
+
