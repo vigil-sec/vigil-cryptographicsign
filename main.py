@@ -1,8 +1,9 @@
 # Main entry point for the Vigil MVP
 
+import os
 import logging
 from trusted_core import KeyManager, AuditLog, Signer
-from host import HostAPI
+from host.api import app, HostAPI
 
 
 def main():
@@ -45,13 +46,13 @@ def main():
     logger.info(public_key_pem)
     logger.info("-" * 60)
     
-    # Initialize host API
-    logger.info("\n[HOST API] Starting REST server...")
+    # Initialize host API with trusted core
+    logger.info("\n[HOST API] Initializing...")
+    api = HostAPI(signer)
+    logger.info("  ✓ Routes configured")
     
-    # Respect PORT environment variable
-    import os
+    # Get port from environment (default 5000)
     port = int(os.getenv("PORT", 5000))
-    api = HostAPI(signer, port=port)
     
     logger.info("\n" + "=" * 60)
     logger.info(f"READY - API listening on http://localhost:{port}")
@@ -68,8 +69,8 @@ def main():
     logger.info(f'  curl http://localhost:{port}/audit-log')
     logger.info("=" * 60 + "\n")
     
-    # Start the Flask app directly (single source of truth)
-    api.app.run(host='0.0.0.0', port=port, debug=False)
+    # Start the Flask app (single entry point)
+    app.run(host='0.0.0.0', port=port, debug=False)
 
 
 if __name__ == '__main__':
