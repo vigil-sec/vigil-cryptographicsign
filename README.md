@@ -395,35 +395,6 @@ def log_message(msg):
     print(msg)
 ```
 
----
-
-## Pricing
-
-| Tier | Price | Proofs/Month | Retention | Support |
-|------|-------|--------------|-----------|---------|
-| **Free** | $0 | 1,000 | 7 days | Community |
-| **Startup** | $99/mo | 50,000 | 90 days | Email |
-| **Business** | $499/mo | 500,000 | 1 year | Priority |
-| **Enterprise** | Custom | Unlimited | 7 years | Dedicated |
-
-[View full pricing →](https://vigil.dev/pricing)
-
----
-
-## Roadmap
-
-- [x] Python SDK
-- [x] Ed25519 cryptographic signing
-- [x] AWS Nitro Enclave integration
-- [x] Public proof verification
-- [ ] JavaScript/TypeScript SDK
-- [ ] Multi-cloud support (Azure, GCP)
-- [ ] Real-time proof streaming
-- [ ] Custom retention policies
-- [ ] Slack/Discord notifications
-- [ ] SOC2 Type II certification
-
----
 
 ## FAQ
 
@@ -477,5 +448,3 @@ MIT License - see [LICENSE](./LICENSE) for details.
 <p align="center">
   <strong>Vigil:</strong> The trust layer for autonomous systems.
   <br>
-  <a href="https://vigil.dev">vigil.dev</a> • <a href="https://twitter.com/vigil_labs">@vigil_labs</a>
-</p>
