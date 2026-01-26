@@ -6,6 +6,7 @@ import os
 import sys
 import argparse
 from . import __version__
+from .config import VIGIL_ENDPOINT
 from .commands import prove as prove_cmd
 from .commands import verify as verify_cmd
 from .commands import status as status_cmd
@@ -24,7 +25,7 @@ from .commands import guard as guard_cmd
 
 def get_endpoint() -> str:
     """Get the Vigil service endpoint from environment or default."""
-    return os.environ.get('VIGIL_ENDPOINT', 'http://localhost:5000')
+    return VIGIL_ENDPOINT
 
 
 def create_parser() -> argparse.ArgumentParser:

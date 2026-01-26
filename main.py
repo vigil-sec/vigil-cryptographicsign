@@ -47,13 +47,17 @@ def main():
     
     # Initialize host API
     logger.info("\n[HOST API] Starting REST server...")
-    api = HostAPI(signer, port=5000)
+    
+    # Respect PORT environment variable
+    import os
+    port = int(os.getenv("PORT", 5000))
+    api = HostAPI(signer, port=port)
     
     logger.info("\n" + "=" * 60)
-    logger.info("READY - API listening on http://localhost:5000")
+    logger.info(f"READY - API listening on http://localhost:{port}")
     logger.info("=" * 60)
     logger.info("\nTry:")
-    logger.info('  curl -X POST http://localhost:5000/prove \\')
+    logger.info(f'  curl -X POST http://localhost:{port}/prove \\')
     logger.info('    -H "Content-Type: application/json" \\')
     logger.info('    -d \'{')
     logger.info('      "agent_id": "agent-42",')
@@ -61,7 +65,7 @@ def main():
     logger.info('      "policy_id": "policy-default"')
     logger.info('    }\'')
     logger.info("\nOr check audit log:")
-    logger.info('  curl http://localhost:5000/audit-log')
+    logger.info(f'  curl http://localhost:{port}/audit-log')
     logger.info("=" * 60 + "\n")
     
     # Start the API server (blocking)

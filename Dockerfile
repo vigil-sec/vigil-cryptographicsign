@@ -20,12 +20,15 @@ COPY trusted_core/ ./trusted_core/
 COPY host/ ./host/
 COPY main.py .
 
-# Expose service port
+# Respect PORT environment variable (default: 5000)
+ENV PORT=5000
 EXPOSE 5000
 
 # Health check
+# Note: HEALTHCHECK always uses PORT 5000 from ENV. If you override PORT,
+# also set PORT=<your_port> when building or running the image.
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:5000/health', timeout=5)"
+    CMD python -c "import os, requests; port = int(os.getenv('PORT', 5000)); requests.get(f'http://localhost:{port}/health', timeout=5)"
 
 # Run service
 CMD ["python", "main.py"]

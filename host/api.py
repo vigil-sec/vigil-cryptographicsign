@@ -164,4 +164,4 @@ class HostAPI:
             debug: Enable Flask debug mode
         """
         logger.info(f"Starting Host API on port {self.port}")
-        self.app.run(host='127.0.0.1', port=self.port, debug=debug)
+        self.app.run(host='0.0.0.0', port=self.port, debug=debug)
